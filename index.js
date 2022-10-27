@@ -21,8 +21,14 @@ io.on('connection', socket => {
     })
   });
   socket.on('typing', (msg) => {
+    msg?.conversation?.Paticipants?.forEach(p => {
+      socket.to(p.user?.id).emit('typing', msg)
+    });
   });
   socket.on('stop_typing', (msg) => {
+    msg?.conversation?.Paticipants?.forEach(p => {
+      socket.to(p.user?.id).emit('stop_typing', msg)
+    });
   });
   io.on('disconnect', (user) => {
     console.log('disconnecting ');
