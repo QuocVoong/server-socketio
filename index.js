@@ -30,6 +30,23 @@ io.on('connection', socket => {
       socket.to(p.user?.id).emit('stop_typing', msg)
     });
   });
+  socket.on('call_request', (msg) => {
+    console.log('call_request ', msg);
+    msg?.conversation.Paticipants?.forEach(p => {
+      socket.to(p.user?.id).emit('call_request', msg)
+    });
+  });
+  socket.on('call_response', (msg) => {
+    msg?.conversation.Paticipants?.forEach(p => {
+      socket.to(p.user?.id).emit('call_response', msg)
+    });
+  });
+
+  socket.on('left_call', (msg) => {
+    msg?.conversation.Paticipants?.forEach(p => {
+      socket.to(p.user?.id).emit('left_call', msg)
+    });
+  });
   io.on('disconnect', (user) => {
     console.log('disconnecting ');
     socket.leave(user?.id);
